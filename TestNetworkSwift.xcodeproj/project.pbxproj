@@ -14,6 +14,7 @@
 		9C4FA94820EE2D6800FF3991 /* LiveStreamingServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C4FA94720EE2D6800FF3991 /* LiveStreamingServer.swift */; };
 		9C4FA94A20EE501900FF3991 /* LiveStreamingClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C4FA94920EE501900FF3991 /* LiveStreamingClient.swift */; };
 		9C4FA94C20EE53B600FF3991 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C4FA94B20EE53B600FF3991 /* CameraViewController.swift */; };
+		9C5C9D5A20F0E9EC006329B3 /* NetworkConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5C9D5920F0E9EC006329B3 /* NetworkConfig.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		9C4FA94720EE2D6800FF3991 /* LiveStreamingServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveStreamingServer.swift; sourceTree = "<group>"; };
 		9C4FA94920EE501900FF3991 /* LiveStreamingClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveStreamingClient.swift; sourceTree = "<group>"; };
 		9C4FA94B20EE53B600FF3991 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
+		9C5C9D5920F0E9EC006329B3 /* NetworkConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConfig.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 				9C4FA94120EE2CE200FF3991 /* Info.plist */,
 				9C4FA94720EE2D6800FF3991 /* LiveStreamingServer.swift */,
 				9C4FA94920EE501900FF3991 /* LiveStreamingClient.swift */,
+				9C5C9D5920F0E9EC006329B3 /* NetworkConfig.swift */,
 			);
 			path = TestNetworkSwift;
 			sourceTree = "<group>";
@@ -142,6 +145,7 @@
 			files = (
 				9C4FA93820EE2CE000FF3991 /* DisplayViewController.swift in Sources */,
 				9C4FA94C20EE53B600FF3991 /* CameraViewController.swift in Sources */,
+				9C5C9D5A20F0E9EC006329B3 /* NetworkConfig.swift in Sources */,
 				9C4FA94A20EE501900FF3991 /* LiveStreamingClient.swift in Sources */,
 				9C4FA93620EE2CE000FF3991 /* AppDelegate.swift in Sources */,
 				9C4FA94820EE2D6800FF3991 /* LiveStreamingServer.swift in Sources */,

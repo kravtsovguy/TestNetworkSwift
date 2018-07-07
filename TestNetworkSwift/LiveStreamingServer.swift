@@ -16,27 +16,28 @@ class LiveStreamingServer {
     var listener: NWListener
     var queue: DispatchQueue
     weak var controller: DisplayViewController!
+    var frame = Data()
     
     init(withViewController controller: DisplayViewController) {
         self.controller = controller
         
         queue = DispatchQueue(label: "Live Streaming Server")
         
-        listener = try! NWListener(parameters: .udp, port: 1053)!
-//        listener.service = NWListener.Service(type: "_camera._tcp")
-//        listener.serviceRegistrationUpdateHandler = { serviceChange in
-//            switch serviceChange {
-//            case .add(let endpoint):
-//                switch endpoint {
-//                case .service(let name, _, _, _):
-//                    print("listening \(name)")
-//                default:
-//                    break;
-//                }
-//            default:
-//                break;
-//            }
-//        }
+        listener = try! NWListener(parameters: NetworkParameters, port: NetworkPort)!
+        listener.service = NWListener.Service(type: NetworkServiceType)
+        listener.serviceRegistrationUpdateHandler = { serviceChange in
+            switch serviceChange {
+            case .add(let endpoint):
+                switch endpoint {
+                case .service(let name, _, _, _):
+                    print("listening \(name)")
+                default:
+                    break;
+                }
+            default:
+                break;
+            }
+        }
         
         listener.newConnectionHandler = { [weak self] newConnection in
             if let strongSelf = self {
@@ -61,18 +62,32 @@ class LiveStreamingServer {
     }
     
     func recieve(on connection: NWConnection) {
-//        connection.batch {
-            connection.receive { (content, context, isComplete, error) in
-                if let frame = content {
-                    
-                    self.controller.recieved(frame: frame)
-
-                    if error == nil {
-                        self.recieve(on: connection)
-                    }
+        connection.batch {
+        connection.receive(minimumIncompleteLength: 1, maximumLength: NetworkFrameSize) { (content, context, isComplete, error) in
+            if let frame = content {
+                
+                self.frame.append(frame)
+                
+                if (frame.count < NetworkFrameSize) {
+//                    print("server: whole frame count \(self.frame.count)")
+                    self.controller.recieved(frame: self.frame)
+                    self.frame = Data()
+                }
+//                self.frame.append(frame)
+//
+//                if (self.frame.count % NetworkFrameSize != 0)
+//                {
+//                    print("server: whole frame count \(self.frame.count)")
+//                    self.controller.recieved(frame: self.frame)
+//                    self.frame = Data()
+//                }
+                
+                if error == nil {
+                    self.recieve(on: connection)
                 }
             }
-//        }
+        }
+        }
     }
     
     

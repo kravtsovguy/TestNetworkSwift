@@ -10,6 +10,11 @@ import UIKit
 import AVFoundation
 
 
+//protocol CameraViewControllerDelegate {
+//    func cameraOutput(withData data:Data);
+//}
+
+
 class CameraViewController: UIViewController {
     
     var client: LiveStreamingClient!
@@ -37,17 +42,17 @@ class CameraViewController: UIViewController {
     }
     
     func setupSession() {
-        device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front)
+        device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back)
         
         captureSession = AVCaptureSession()
-        captureSession.sessionPreset = .low
+        captureSession.sessionPreset = .iFrame1280x720
         captureSession.beginConfiguration()
         try! captureSession.addInput(AVCaptureDeviceInput(device: device))
         
         let outputData = AVCaptureVideoDataOutput()
-        outputData.videoSettings = [
-            kCVPixelBufferPixelFormatTypeKey as String : Int(kCVPixelFormatType_32BGRA)
-        ]
+//        outputData.videoSettings = [
+//            kCVPixelBufferPixelFormatTypeKey as String : Int(kCVPixelFormatType_32BGRA)
+//        ]
         
         let queue = DispatchQueue(label: "Camera Output Queue")
         outputData.setSampleBufferDelegate(self, queue: queue)
@@ -76,6 +81,10 @@ extension CameraViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
         
         DispatchQueue.main.async {
             self.imageView.image = image
+        }
+        
+        if client?.connection.state == .ready {
+            self.client.startSending()
         }
     }
     

@@ -21,15 +21,15 @@ class LiveStreamingClient {
         
         queue = DispatchQueue(label: "Live Streaming Server")
         
-        connection = NWConnection(host: "10.42.70.16", port: 1053, using: .udp)
-//        connection = NWConnection(to: NWEndpoint.service(name: name, type: "_camera._tcp", domain: "local", interface: nil), using: .tcp)
+//        connection = NWConnection(host: "10.42.72.5", port: NetworkPort, using: NetworkParameters)
+        connection = NWConnection(to: NWEndpoint.service(name: name, type: NetworkServiceType, domain: "local", interface: nil), using: NetworkParameters)
         
         connection.stateUpdateHandler = { [weak self] state in
             switch state {
             case .ready:
                 print("client ready")
-                sleep(2)
-                self?.startSending()
+//                sleep(2)
+//                self?.startSending()
             case .failed(let error):
                 print("client failed: \(error)")
             default:
@@ -45,7 +45,7 @@ class LiveStreamingClient {
 //        frame = "hello".data(using: .utf8)!
         var frames = [Data]()
         
-        let preferredChunkSize = 1024
+        let preferredChunkSize = NetworkFrameSize
         let totalSize = frame.count
         var offset = 0
         
@@ -61,23 +61,37 @@ class LiveStreamingClient {
                 frames.append(chunk)
             }
         }
+        
+//        print("whole frame size \(frame.count)")
         self.sendFrame(connection: connection, frames: frames)
     }
     
     func sendFrame(connection: NWConnection, frames: [Data]) {
-//         connection.batch {
+//        if frames.last?.count == NetworkFrameSize {
+//            print("OOOOOPS")
+//            exit(1)
+//        }
+         connection.batch {
             for frame in frames {
+//                connection.send(content: frame, completion: .idempotent)
                 connection.send(content: frame, completion: .contentProcessed({ error in
                     if let error = error {
                         print("error while sending: \(error)")
                     } else {
-                        print("sended: \(frame.count)")
+//                        print("sended: \(frame.count)")
 //                        connection.cancel()
 //                        self.startSending()
                     }
                 }))
             }
-//        }
+        }
     }
     
 }
+
+
+//extension LiveStreamingClient: CameraViewControllerDelegate {
+//    func cameraOutput(withData data: Data) {
+//        self.startSending()
+//    }
+//}

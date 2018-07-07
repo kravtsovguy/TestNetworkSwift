@@ -26,16 +26,17 @@ class DisplayViewController: UIViewController {
         view.addSubview(imageView)
         
         label = UILabel(frame: CGRect(x: 0, y: 50, width: view.frame.width, height: 50))
-        label.text = "test"
+        label.text = ""
         view.addSubview(label)
     }
     
     func recieved(frame: Data) {
+
         DispatchQueue.main.async {
-            self.label.text = "\(self.label.text ?? "") + length: \(frame.count)"
-//            self.imageView.image = UIImage(data: frame)
-            let text = String(data: frame, encoding: .utf8)
-            print("\(text ?? "none")")
+//            self.label.text = "\(self.label.text ?? "") + length: \(frame.count)"
+            self.imageView.image = UIImage(data: frame)
+//            let text = String(data: frame, encoding: .utf8)
+//            print("\(text ?? "none")")
         }
     }
 }
