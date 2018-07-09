@@ -16,20 +16,17 @@ class LiveStreamingClient {
     var queue: DispatchQueue
     weak var controller: CameraViewController!
     
-    init(name: String, controller: CameraViewController) {
+    init(withViewController controller: CameraViewController, usingQueue queue: DispatchQueue) {
         self.controller = controller
-        
-        queue = DispatchQueue(label: "Live Streaming Server")
+        self.queue = queue
         
 //        connection = NWConnection(host: "10.42.72.5", port: NetworkPort, using: NetworkParameters)
-        connection = NWConnection(to: NWEndpoint.service(name: name, type: NetworkServiceType, domain: "local", interface: nil), using: NetworkParameters)
+        connection = NWConnection(to: NWEndpoint.service(name: NetworkServiceName, type: NetworkServiceType, domain: "local", interface: nil), using: NetworkParameters)
         
-        connection.stateUpdateHandler = { [weak self] state in
+        connection.stateUpdateHandler = { state in
             switch state {
             case .ready:
                 print("client ready")
-//                sleep(2)
-//                self?.startSending()
             case .failed(let error):
                 print("client failed: \(error)")
             default:
@@ -40,9 +37,12 @@ class LiveStreamingClient {
         connection.start(queue: queue)
     }
     
-    func startSending() {
-        var frame = self.controller.currentFrame!
-//        frame = "hello".data(using: .utf8)!
+    func send(frame: Data) {
+        
+        if (connection.state != .ready){
+            return;
+        }
+        
         var frames = [Data]()
         
         let preferredChunkSize = NetworkFrameSize
@@ -62,25 +62,15 @@ class LiveStreamingClient {
             }
         }
         
-//        print("whole frame size \(frame.count)")
-        self.sendFrame(connection: connection, frames: frames)
+        self.send(frames: frames, uisngConnection: connection)
     }
     
-    func sendFrame(connection: NWConnection, frames: [Data]) {
-//        if frames.last?.count == NetworkFrameSize {
-//            print("OOOOOPS")
-//            exit(1)
-//        }
+    func send(frames: [Data], uisngConnection connection: NWConnection) {
          connection.batch {
             for frame in frames {
-//                connection.send(content: frame, completion: .idempotent)
                 connection.send(content: frame, completion: .contentProcessed({ error in
                     if let error = error {
                         print("error while sending: \(error)")
-                    } else {
-//                        print("sended: \(frame.count)")
-//                        connection.cancel()
-//                        self.startSending()
                     }
                 }))
             }
@@ -88,10 +78,3 @@ class LiveStreamingClient {
     }
     
 }
-
-
-//extension LiveStreamingClient: CameraViewControllerDelegate {
-//    func cameraOutput(withData data: Data) {
-//        self.startSending()
-//    }
-//}

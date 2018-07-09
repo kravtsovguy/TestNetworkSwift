@@ -19,24 +19,22 @@ class DisplayViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .red
         
-        server = LiveStreamingServer(withViewController: self)
+        let queue = DispatchQueue(label: "Live Streaming Queue");
+        server = LiveStreamingServer(withViewController: self, usingQueue: queue)
+        
+        label = UILabel(frame: CGRect(x: 0, y: view.frame.height / 2, width: view.frame.width, height: 50))
+        label.text = "Server Started"
+        label.textAlignment = .center
+        view.addSubview(label)
         
         imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
         imageView.contentMode = UIView.ContentMode.scaleAspectFit
         view.addSubview(imageView)
-        
-        label = UILabel(frame: CGRect(x: 0, y: 50, width: view.frame.width, height: 50))
-        label.text = ""
-        view.addSubview(label)
     }
     
     func recieved(frame: Data) {
-
         DispatchQueue.main.async {
-//            self.label.text = "\(self.label.text ?? "") + length: \(frame.count)"
             self.imageView.image = UIImage(data: frame)
-//            let text = String(data: frame, encoding: .utf8)
-//            print("\(text ?? "none")")
         }
     }
 }

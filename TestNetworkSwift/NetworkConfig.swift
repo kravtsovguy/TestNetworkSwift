@@ -12,3 +12,4 @@ let NetworkFrameSize = 1024
 let NetworkParameters = NWParameters.udp
 let NetworkPort = NWEndpoint.Port(integerLiteral: 1053)
 let NetworkServiceType = "_camera._udp"
+let NetworkServiceName = "Camera Live Streaming"

@@ -9,19 +9,12 @@
 import UIKit
 import AVFoundation
 
-
-//protocol CameraViewControllerDelegate {
-//    func cameraOutput(withData data:Data);
-//}
-
-
 class CameraViewController: UIViewController {
     
-    var client: LiveStreamingClient!
+    var client: LiveStreamingClient?
     var captureSession: AVCaptureSession!
     var device: AVCaptureDevice!
     var imageView: UIImageView!
-    var currentFrame: Data?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,7 +24,8 @@ class CameraViewController: UIViewController {
             if !granted {
                 exit(1)
             } else {
-                self.client = LiveStreamingClient(name: "Matvey’s MacBook Pro", controller: self)
+                let queue = DispatchQueue(label: "Live Streaming Queue");
+                self.client = LiveStreamingClient(withViewController: self, usingQueue: queue)
                 self.setupSession()
             }
         }
@@ -50,10 +44,6 @@ class CameraViewController: UIViewController {
         try! captureSession.addInput(AVCaptureDeviceInput(device: device))
         
         let outputData = AVCaptureVideoDataOutput()
-//        outputData.videoSettings = [
-//            kCVPixelBufferPixelFormatTypeKey as String : Int(kCVPixelFormatType_32BGRA)
-//        ]
-        
         let queue = DispatchQueue(label: "Camera Output Queue")
         outputData.setSampleBufferDelegate(self, queue: queue)
         captureSession.addOutput(outputData)
@@ -74,17 +64,12 @@ extension CameraViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
         let buffer = CMSampleBufferGetImageBuffer(sampleBuffer)!
         let ciImage = CIImage(cvPixelBuffer: buffer)
         let context = CIContext()
-        let data = context.jpegRepresentation(of: ciImage, colorSpace: CGColorSpaceCreateDeviceRGB(), options:[:])
-        self.currentFrame = data
-        let image = UIImage(data: data!)
-//        let image = UIImage(ciImage: ciImage)
+        let data = context.jpegRepresentation(of: ciImage, colorSpace: CGColorSpaceCreateDeviceRGB(), options:[:])!
+        let image = UIImage(data: data)
+        self.client?.send(frame: data)
         
         DispatchQueue.main.async {
             self.imageView.image = image
-        }
-        
-        if client?.connection.state == .ready {
-            self.client.startSending()
         }
     }
     
