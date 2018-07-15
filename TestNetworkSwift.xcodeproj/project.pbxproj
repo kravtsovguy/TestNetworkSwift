@@ -16,6 +16,7 @@
 		9C4FA94C20EE53B600FF3991 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C4FA94B20EE53B600FF3991 /* CameraViewController.swift */; };
 		9C5C9D5A20F0E9EC006329B3 /* NetworkConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5C9D5920F0E9EC006329B3 /* NetworkConfig.swift */; };
 		9C636F4F20F1080500EEAF8A /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C636F4E20F1080500EEAF8A /* MainViewController.swift */; };
+		9CB9F63220F8DFC30093BA80 /* SberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB9F63120F8DFC30093BA80 /* SberViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		9C4FA94B20EE53B600FF3991 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		9C5C9D5920F0E9EC006329B3 /* NetworkConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConfig.swift; sourceTree = "<group>"; };
 		9C636F4E20F1080500EEAF8A /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		9CB9F63120F8DFC30093BA80 /* SberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SberViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				9C4FA93520EE2CE000FF3991 /* AppDelegate.swift */,
+				9CB9F63120F8DFC30093BA80 /* SberViewController.swift */,
 				9C4FA93720EE2CE000FF3991 /* DisplayViewController.swift */,
 				9C4FA94B20EE53B600FF3991 /* CameraViewController.swift */,
 				9C636F4E20F1080500EEAF8A /* MainViewController.swift */,
@@ -152,6 +155,7 @@
 				9C5C9D5A20F0E9EC006329B3 /* NetworkConfig.swift in Sources */,
 				9C4FA94A20EE501900FF3991 /* LiveStreamingClient.swift in Sources */,
 				9C4FA93620EE2CE000FF3991 /* AppDelegate.swift in Sources */,
+				9CB9F63220F8DFC30093BA80 /* SberViewController.swift in Sources */,
 				9C4FA94820EE2D6800FF3991 /* LiveStreamingServer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

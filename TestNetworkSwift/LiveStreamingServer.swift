@@ -18,11 +18,11 @@ class LiveStreamingServer {
     weak var controller: DisplayViewController!
     var frame = Data()
     
-    init(withViewController controller: DisplayViewController, usingQueue queue: DispatchQueue) {
+    init(withViewController controller: DisplayViewController?, usingQueue queue: DispatchQueue) {
         self.controller = controller
         self.queue = queue
         
-        listener = try! NWListener(parameters: NetworkParameters, port: NetworkPort)!
+        listener = try! NWListener(using: NetworkParameters, on: NetworkPort)
         listener.service = NWListener.Service(name: NetworkServiceName, type: NetworkServiceType)
         listener.serviceRegistrationUpdateHandler = { serviceChange in
             switch serviceChange {
@@ -68,7 +68,7 @@ class LiveStreamingServer {
                     self.frame.append(frame)
                     
                     if (frame.count < NetworkFrameSize) {
-                        self.controller.recieved(frame: self.frame)
+                        self.controller?.recieved(frame: self.frame)
                         self.frame = Data()
                     }
 

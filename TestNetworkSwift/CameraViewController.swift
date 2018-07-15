@@ -36,10 +36,10 @@ class CameraViewController: UIViewController {
     }
     
     func setupSession() {
-        device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back)
+        device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front)
         
         captureSession = AVCaptureSession()
-        captureSession.sessionPreset = .iFrame1280x720
+        captureSession.sessionPreset = .hd1920x1080
         captureSession.beginConfiguration()
         try! captureSession.addInput(AVCaptureDeviceInput(device: device))
         
